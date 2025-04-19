@@ -9,8 +9,6 @@ interface registerParams {
   password: string;
 }
 
-// Register Function
-
 export const register = async ({
   firstName,
   lastName,
@@ -39,8 +37,6 @@ interface LoginParams {
   email: string;
   password: string;
 }
-
-// Login Function
 
 export const login = async ({ email, password }: LoginParams) => {
   const findUser = await userModel.findOne({ email });

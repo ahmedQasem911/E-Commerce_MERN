@@ -64,7 +64,6 @@ export const addItemToCart = async ({
     return { data: "Item already exists in cart!", statusCode: 400 };
   }
 
-  // Fetch the product
   const product = await productModel.findById(productId);
 
   if (!product) {
@@ -81,7 +80,6 @@ export const addItemToCart = async ({
     quantity,
   });
 
-  // Update total amount
   cart.totalAmount += product.price * quantity;
 
   const updatedCart = await cart.save();
