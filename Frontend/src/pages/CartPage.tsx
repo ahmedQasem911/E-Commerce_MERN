@@ -2,7 +2,15 @@ import { Box, Button, ButtonGroup, Container, Typography } from "@mui/material";
 import { useCart } from "../context/Cart/CartContext";
 
 const CartPage = () => {
-  const { cartItems, totalAmount } = useCart();
+  const { cartItems, totalAmount, updateItemInCart } = useCart();
+
+  const handleQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      return;
+    }
+
+    updateItemInCart(productId, quantity);
+  };
 
   return (
     <Container fixed sx={{ mt: 2 }}>
@@ -33,8 +41,20 @@ const CartPage = () => {
               </Box>
             </Box>
             <ButtonGroup variant="contained" aria-label="Basic button group">
-              <Button>-</Button>
-              <Button>+</Button>
+              <Button
+                onClick={() =>
+                  handleQuantity(item.productId, item.quantity - 1)
+                }
+              >
+                -
+              </Button>
+              <Button
+                onClick={() =>
+                  handleQuantity(item.productId, item.quantity + 1)
+                }
+              >
+                +
+              </Button>
             </ButtonGroup>
           </Box>
         ))}
