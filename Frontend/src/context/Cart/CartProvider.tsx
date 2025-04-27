@@ -8,6 +8,7 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
   const { token } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -192,9 +193,43 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       console.error(error);
     }
   };
+
+  const clearCart = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/cart`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        setError("Failed to empty the cart!");
+      }
+
+      const cart = await response.json();
+
+      if (!cart) {
+        setError("Failed to parse cart data!");
+      }
+
+      setCartItems([]);
+      setTotalAmount(0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, totalAmount, addItemToCart, updateItemInCart, removeItemInCart }}
+      value={{
+        cartItems,
+        totalAmount,
+        addItemToCart,
+        updateItemInCart,
+        removeItemInCart,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>
